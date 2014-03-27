@@ -6,17 +6,18 @@ package edu.wpi.first.wpilibj;
  */
 public class TestCode extends IterativeRobot {
 
-    Jaguar leftJag, rightJag;
+    Jaguar leftMotor;
+    Talon rightMotor;
 
     @Override
     public void robotInit() {
-        leftJag = new Jaguar(1);
-        rightJag = new Jaguar(1);
+        leftMotor = new Jaguar(1);
+        rightMotor = new Talon(2);
     }
 
     @Override
     public void teleopPeriodic() {
-        leftJag.set(1);
-        rightJag.set(-1);
+        leftMotor.set(1);
+        rightMotor.set(-1);
     }
 }

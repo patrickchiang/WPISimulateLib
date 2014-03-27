@@ -48,4 +48,9 @@ public class PWM {
     public boolean equals(PWM o) {
         return getModuleNumber() == o.getModuleNumber() && getChannel() == o.getChannel();
     }
+
+    @Override
+    public String toString() {
+        return this.getClass().getSimpleName() + " {Module " + getModuleNumber() + " Channel " + getChannel() + "}";
+    }
 }

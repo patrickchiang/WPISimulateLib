@@ -7,7 +7,6 @@ package edu.wpi.first.wpilibj;
 public class IterativeRobot {
 
     public void startCompetition() {
-
     }
 
     public void robotInit() {
@@ -19,7 +18,7 @@ public class IterativeRobot {
     }
 
     public void autonomousPeriodic() {
-        System.out.println("Default autonomousPeriodic()... override me.");
+//        System.out.println("Default autonomousPeriodic()... override me.");
     }
 
     public void teleopInit() {
@@ -27,7 +26,7 @@ public class IterativeRobot {
     }
 
     public void teleopPeriodic() {
-        System.out.println("Default teleopPeriodic()... override me.");
+//        System.out.println("Default teleopPeriodic()... override me.");
     }
 
     public void testInit() {
@@ -35,7 +34,7 @@ public class IterativeRobot {
     }
 
     public void testPeriodic() {
-        System.out.println("Default testPeriodic()... override me.");
+//        System.out.println("Default testPeriodic()... override me.");
     }
 
     public void disabledInit() {
@@ -43,6 +42,6 @@ public class IterativeRobot {
     }
 
     public void disabledPeriodic() {
-        System.out.println("Default disabledPeriodic()... override me.");
+//        System.out.println("Default disabledPeriodic()... override me.");
     }
 }

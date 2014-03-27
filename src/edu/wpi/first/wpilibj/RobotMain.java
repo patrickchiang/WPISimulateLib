@@ -13,26 +13,76 @@ import net.java.games.input.ControllerEnvironment;
  */
 public class RobotMain {
 
+    public static final int SERVER_PORT = 3070;
+    public static final int LOOP_PERIOD = 20;
+
     public static void main(String[] args) {
-        //startServer();
-        
+        startServer();
+
         IterativeRobot robot = new TestCode();
         robot.robotInit();
+        robot.disabledInit();
+        int lastState = RobotStatus.state;
 
+        // Always in periodic check. Delegate state changing to frontend.
         while (true) {
             try {
-                Thread.sleep(20);
+                Thread.sleep(LOOP_PERIOD);
             } catch (InterruptedException ex) {
                 ex.printStackTrace();
             }
-            robot.teleopPeriodic();
-            //System.out.println(RobotStatus.pwms);
+
+            // Changed state in last loop time
+            if (lastState != RobotStatus.state) {
+                switch (RobotStatus.state) {
+                    case 0:
+                        robot.disabledInit();
+                        break;
+                    case 1:
+                        robot.autonomousInit();
+                        break;
+                    case 2:
+                        robot.teleopInit();
+                        break;
+                    case 3:
+                        robot.testInit();
+                        break;
+                    default:
+                        System.err.println("Fatal Error: Invalid robot state.");
+                        System.exit(1);
+                        break;
+                }
+            }
+
+            lastState = RobotStatus.state;
+
+            switch (RobotStatus.state) {
+                case 0:
+                    robot.disabledPeriodic();
+                    break;
+                case 1:
+                    robot.autonomousPeriodic();
+                    break;
+                case 2:
+                    robot.teleopPeriodic();
+                    break;
+                case 3:
+                    robot.testPeriodic();
+                    break;
+                default:
+                    System.err.println("Fatal Error: Invalid robot state.");
+                    System.exit(1);
+                    break;
+            }
+
+//            System.out.println(RobotStatus.pwms);
+            System.out.println(lastState);
         }
     }
 
     public static void startServer() {
         try {
-            HttpServer server = HttpServer.create(new InetSocketAddress(80), 0);
+            HttpServer server = HttpServer.create(new InetSocketAddress(SERVER_PORT), 0);
             server.createContext("/backend", new Backend());
             server.setExecutor(null); // creates a default executor
             server.start();
