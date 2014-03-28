@@ -8,13 +8,16 @@
 		<div id="toolbar">
 			<span class="barText">Toolbar:</span>
 			<button type="button" id="addModule">
-				Add Module
+				Add Device
 			</button>
 			<button type="button" id="saveWorkspace">
-				Save Workspace
+				Save
 			</button>
 			<button type="button" id="loadWorkspace">
-				Load Workspace
+				Load
+			</button>
+			<button type="button" id="backendReady">
+				Deploy
 			</button>
 		</div>
 
@@ -26,10 +29,9 @@
 			<p>
 				<select class="moduleType">
 					<option>Type</option>
-					<option data-inputs="1" data-outputs="1">Jaguar</option>
-					<option data-inputs="1" data-outputs="1">Talon</option>
-					<option data-inputs="1" data-outputs="1">Victor</option>
-					<option data-inputs="1" data-outputs="0">Driver</option>
+					<option data-inputs="0" data-outputs="1">Jaguar</option>
+					<option data-inputs="0" data-outputs="1">Talon</option>
+					<option data-inputs="0" data-outputs="1">Victor</option>
 					<option data-inputs="1" data-outputs="0">Ultrasonic</option>
 				</select>
 			<p>
@@ -57,6 +59,9 @@
 					<option>13</option>
 					<option>14</option>
 				</select>
+			</p>
+			<p>
+				Value: <span class="valueNum">0.0</span>
 			</p>
 		</div>
 		<div id="workspace"></div>

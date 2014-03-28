@@ -31,4 +31,12 @@ public class RobotStatus {
 
         pwms.add(device);
     }
+    
+    public static String devicesToJson() {
+        String json = "{";
+        for (PWM p : pwms) {
+            json += p + ",";
+        }
+        return json.substring(0, json.length() - 1) + "}";
+    }
 }

@@ -51,6 +51,8 @@ public class PWM {
 
     @Override
     public String toString() {
-        return this.getClass().getSimpleName() + " {Module " + getModuleNumber() + " Channel " + getChannel() + "}";
+        return "\"" + this.getClass().getSimpleName() + "\": {\"Module\": "
+                + getModuleNumber() + ", \"Channel\": " + getChannel() + 
+                ", \"Value\": " + get() + "}";
     }
 }

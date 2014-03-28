@@ -20,14 +20,16 @@ public class Backend implements HttpHandler {
             String response = "Done.";
 
             if (params == null) {   // Give it info
-                
+                response = RobotStatus.devicesToJson();
             } else if (params.containsKey("status")) {
                 // Get, parse, and set state
                 int status = Integer.parseInt(params.get("status"));
                 RobotStatus.state = status;
             }
 
+            t.getResponseHeaders().add("Access-Control-Allow-Origin", "*");
             t.sendResponseHeaders(200, response.length());
+
             OutputStream os = t.getResponseBody();
             os.write(response.getBytes());
             os.flush();

@@ -74,9 +74,6 @@ public class RobotMain {
                     System.exit(1);
                     break;
             }
-
-//            System.out.println(RobotStatus.pwms);
-            System.out.println(lastState);
         }
     }
 

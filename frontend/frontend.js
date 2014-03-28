@@ -12,11 +12,69 @@ var mods = new Array();
 // Current module ID for recursing
 var moduleId;
 
+// Store hearbeat interval
+var heartbeat;
+
+// Store mod items
+var modStore;
+
+// Address for backend
+var BACKEND_URL = "http://localhost:3070/backend";
+
+// Interval between each heartbeat
+var HEARTBEAT_INTERVAL = 20;
+
 window.onload = function() {
 	$("#addModule").mousedown(addModule);
 	$("#saveWorkspace").mousedown(saveWorkspace);
 	$("#loadWorkspace").mousedown(loadWorkspace);
+	$("#backendReady").mousedown(backendReady);
+	window.onclick = modulesChanged;
+	heartbeat = setInterval(getInfoFromServer, HEARTBEAT_INTERVAL);
 };
+
+function modulesChanged() {
+	modStore = JSON.parse(localStorage.getItem("savedata"));
+}
+
+function backendReady() {
+	if (heartbeat)
+		clearInterval(heartbeat);
+	heartbeat = setInterval(getInfoFromServer, HEARTBEAT_INTERVAL);
+}
+
+function getInfoFromServer() {
+	$.ajax({
+		url : BACKEND_URL,
+		success : function(data, status, xhr) {
+			if (modStore == null)
+				modulesChanged();
+			console.log(data);
+			displayModules(data);
+		},
+		error : function(xhr, status, error) {
+			console.log("Backend not responding.");
+			// Cancel and wait until backend comes back up
+			clearInterval(heartbeat);
+		}
+	});
+}
+
+function displayModules(data) {
+	$.each(JSON.parse(data), function(i, m) {
+		for (var j = 0; j < modStore.length; j++) {
+			var mod = modStore[j];
+
+			if (mod == null)
+				continue;
+
+			if (mod.moduleId == m.Module.toString() && mod.channelId == m.Channel.toString()) {
+				var nameOfModule = j;
+				$("#module" + nameOfModule + " .valueNum").html(m.Value.toString());
+			}
+		}
+	});
+}
 
 /*
  * Set up the plumbing: connections, connectors, endpoints..etc.
@@ -183,9 +241,9 @@ function dataToWorkspace(data) {
 		// reset values
 		var nameOfModule = module.attr("id");
 		$("#" + nameOfModule + " .moduleType").val(mods[i].modType);
-		$("#" + nameOfModule + " .moduleId").val("Module ID: " + mods[i].moduleId);
-		$("#" + nameOfModule + " .deviceId").val(mods[i].deviceId);
-		$("#" + nameOfModule + " .inputValue").val(mods[i].inputValue);
+		$("#" + nameOfModule + " .moduleId").val(mods[i].moduleId);
+		$("#" + nameOfModule + " .channelId").val(mods[i].channelId);
+		$("#" + nameOfModule + " .valueNum").val(mods[i].valueNum);
 
 		// initialize module according to type
 		selectModuleType.call($("#" + nameOfModule + " .moduleType"));
@@ -239,26 +297,18 @@ function saveWorkspace() {
 		// get the full html name of the module
 		var modName = modules[i].attr("id");
 
-		// error! This disallows saving when modules don't have a proper type
-		if ($("#" + modName + " .moduleType").val() == null) {
-			$("#overlay div").html("Error: Some modules are not yet used!!");
-			displayOverlay();
-			$("#overlay").fadeOut(1000, "easeInOutExpo");
-			return;
-		}
-
 		// pixels from left
 		mod.x = $("#" + modName).css("left");
 		// pixels from top
 		mod.y = $("#" + modName).css("top");
 		// module type
 		mod.modType = $("#" + modName + " .moduleType").val();
-		// clear module ID
-		mod.moduleId = "";
-		// device ID
-		mod.deviceId = $("#" + modName + " .deviceId").val();
+		// module ID
+		mod.moduleId = $("#" + modName + " .moduleId").val();
+		// channel ID
+		mod.channelId = $("#" + modName + " .channelId").val();
 		// value
-		mod.inputValue = $("#" + modName + " .inputValue").val();
+		mod.valueNum = $("#" + modName + " .valueNum").val();
 
 		// connections
 		mod.conn = new Array();
@@ -284,6 +334,8 @@ function saveWorkspace() {
 
 	localStorage.setItem("savedata", jsonData);
 	$("#overlay").fadeOut(1000, "easeInOutExpo");
+
+	modStore = JSON.parse(localStorage.getItem("savedata"));
 }
 
 /*
@@ -297,6 +349,7 @@ function deploy() {
 	displayOverlay();
 
 	// deploy code
+	modStore = JSON.parse(localStorage.getItem("savedata"));
 }
 
 /*
@@ -356,6 +409,8 @@ function selectModuleType() {
 
 	// call prepare, give it the correct endpoints
 	prepare(nameOfModule, $(selectedOption + " option:selected").data("inputs"), $(selectedOption + " option:selected").data("outputs"));
+
+	modStore = JSON.parse(localStorage.getItem("savedata"));
 }
 
 /*

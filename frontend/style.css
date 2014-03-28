@@ -167,6 +167,7 @@ button:active {
 }
 
 input {
+    width: 50%;
 	border-radius: 6px;
 	border: 1px double #a9a9a9;
 	background-color: white;
