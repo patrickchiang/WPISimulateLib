@@ -22,15 +22,40 @@ var modStore;
 var BACKEND_URL = "http://localhost:3070/backend";
 
 // Interval between each heartbeat
-var HEARTBEAT_INTERVAL = 20;
+var HEARTBEAT_INTERVAL = 200;
 
 window.onload = function() {
+	loadWorkspace();
 	$("#addModule").mousedown(addModule);
 	$("#saveWorkspace").mousedown(saveWorkspace);
 	$("#loadWorkspace").mousedown(loadWorkspace);
 	$("#backendReady").mousedown(backendReady);
 	window.onclick = modulesChanged;
 	heartbeat = setInterval(getInfoFromServer, HEARTBEAT_INTERVAL);
+
+	$(".mode .btn-group .btn").click(function() {
+		$(this).addClass("active").siblings(".btn").removeClass("active");
+		$(".status button").removeClass("active");
+		$(".status .btn-disable").addClass("active");
+
+		$.ajax({
+			url : BACKEND_URL + "?status=0"
+		});
+	});
+
+	$(".status .btn-group .btn").click(function() {
+		$(this).addClass("active").siblings(".btn").removeClass("active");
+
+		if ($(this).hasClass("btn-enable")) {
+			$.ajax({
+				url : BACKEND_URL + "?status=" + $(".mode .btn-group .btn.active").data("index")
+			});
+		} else {
+			$.ajax({
+				url : BACKEND_URL + "?status=0"
+			});
+		}
+	});
 };
 
 function modulesChanged() {
@@ -51,11 +76,13 @@ function getInfoFromServer() {
 				modulesChanged();
 			console.log(data);
 			displayModules(data);
+			$(".connection").html('Connected <i class="fa fa-check"></i>');
 		},
 		error : function(xhr, status, error) {
 			console.log("Backend not responding.");
 			// Cancel and wait until backend comes back up
 			clearInterval(heartbeat);
+			$(".connection").html('Disconnected <i class="fa fa-exclamation"></i>');
 		}
 	});
 }
@@ -68,7 +95,7 @@ function displayModules(data) {
 			if (mod == null)
 				continue;
 
-			if (mod.moduleId == m.Module.toString() && mod.channelId == m.Channel.toString()) {
+			if (mod.moduleId == m.Module.toString() && mod.channelId == m.Channel.toString() && mod.modType == i) {
 				var nameOfModule = j;
 				$("#module" + nameOfModule + " .valueNum").html(m.Value.toString());
 			}

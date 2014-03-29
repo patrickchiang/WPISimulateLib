@@ -22,6 +22,7 @@ public class RobotMain {
         IterativeRobot robot = new TestCode();
         robot.robotInit();
         robot.disabledInit();
+        RobotStatus.disable();
         int lastState = RobotStatus.state;
 
         // Always in periodic check. Delegate state changing to frontend.
@@ -37,6 +38,7 @@ public class RobotMain {
                 switch (RobotStatus.state) {
                     case 0:
                         robot.disabledInit();
+                        RobotStatus.disable();
                         break;
                     case 1:
                         robot.autonomousInit();

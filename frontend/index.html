@@ -2,23 +2,51 @@
 <html>
 	<head>
 		<title>jRIO Frontend Interface</title>
-		<link rel="stylesheet" type="text/css" href="style.css">
+		<link rel="stylesheet" type="text/css" href="css/bootstrap.css">
+		<link rel="stylesheet" type="text/css" href="css/font-awesome.css">
+		<link rel="stylesheet" type="text/css" href="css/style.css">
 	</head>
 	<body>
 		<div id="toolbar">
-			<span class="barText">Toolbar:</span>
-			<button type="button" id="addModule">
-				Add Device
+			<span class="barText">jRIO</span>
+			<button type="button" id="addModule" class="btn btn-primary">
+				<i class="fa fa-plus"></i> Add Device
 			</button>
-			<button type="button" id="saveWorkspace">
-				Save
+			<button type="button" id="saveWorkspace" class="btn btn-primary">
+				<i class="fa fa-floppy-o"></i> Save
 			</button>
-			<button type="button" id="loadWorkspace">
-				Load
+			<button type="button" id="backendReady" class="btn btn-primary">
+				<i class="fa fa-cloud-upload"></i> Deploy
 			</button>
-			<button type="button" id="backendReady">
-				Deploy
-			</button>
+			<div class="mode">
+				<div class="btn-group">
+					<button type="button" class="btn btn-warning btn-status btn-auto active" data-index="1">
+						Auto
+					</button>
+					<button type="button" class="btn btn-warning btn-status btn-tele" data-index="2">
+						Teleop
+					</button>
+					<button type="button" class="btn btn-warning btn-status btn-test" data-index="3">
+						Test
+					</button>
+				</div>
+			</div>
+			<div class="status">
+				<div class="btn-group">
+					<button type="button" class="btn btn-danger btn-status btn-enable">
+						Enabled
+					</button>
+					<button type="button" class="btn btn-danger btn-status btn-disable active">
+						Disabled
+					</button>
+				</div>
+			</div>
+			<div class="robot">
+				Robot: <span class="connection">Connected <i class="fa fa-check"></i></span>
+			</div>
+			<div class="robot">
+				Joystick: <span class="joystick">None <i class="fa fa-exclamation"></i></span>
+			</div>
 		</div>
 
 		<div id="overlay">
@@ -26,6 +54,9 @@
 		</div>
 		<div id="template">
 			<div class="closeBtn"></div>
+			<p>
+				Device Module
+			</p>
 			<p>
 				<select class="moduleType">
 					<option>Type</option>
@@ -66,9 +97,9 @@
 		</div>
 		<div id="workspace"></div>
 
-		<script src="jquery.min.js"></script>
-		<script src="jquery-ui.min.js"></script>
-		<script src="jquery.jsPlumb-1.5.5-min.js"></script>
-		<script src="frontend.js"></script>
+		<script src="js/jquery.min.js"></script>
+		<script src="js/jquery-ui.min.js"></script>
+		<script src="js/jquery.jsPlumb-1.5.5-min.js"></script>
+		<script src="js/frontend.js"></script>
 	</body>
 </html>
