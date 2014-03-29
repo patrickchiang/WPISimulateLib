@@ -6,7 +6,7 @@ package edu.wpi.first.wpilibj;
  */
 public class PWM {
 
-    private int value = 0;
+    private double value = 0;
     private int moduleNumber = 0;
     private int channel = 0;
 
@@ -22,19 +22,19 @@ public class PWM {
     }
 
     public double get() {
-        return value / 255.0 * 2.0 - 1.0;
+        return value;
     }
 
     public void set(double speed) {
-        value = (int) ((speed + 1.0) / 2.0 * 255);
+        value = speed;
     }
 
     public void setRaw(int raw) {
-        value = raw;
+        value = raw / 127 - 1.0;
     }
 
     public int getRaw() {
-        return value;
+        return (int) ((value + 1.0) * 127.0);
     }
 
     public int getModuleNumber() {
