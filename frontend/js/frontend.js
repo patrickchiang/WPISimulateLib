@@ -33,30 +33,34 @@ window.onload = function() {
 	window.onclick = modulesChanged;
 	heartbeat = setInterval(getInfoFromServer, HEARTBEAT_INTERVAL);
 
-	$(".mode .btn-group .btn").click(function() {
-		$(this).addClass("active").siblings(".btn").removeClass("active");
-		$(".status button").removeClass("active");
-		$(".status .btn-disable").addClass("active");
+	$(".mode .btn-group .btn").click(changeMode);
 
+	$(".status .btn-group .btn").click(enable);
+};
+
+function changeMode() {
+	$(this).addClass("active").siblings(".btn").removeClass("active");
+	$(".status button").removeClass("active");
+	$(".status .btn-disable").addClass("active");
+
+	$.ajax({
+		url : BACKEND_URL + "?status=0"
+	});
+}
+
+function enable() {
+	$(this).addClass("active").siblings(".btn").removeClass("active");
+
+	if ($(this).hasClass("btn-enable")) {
+		$.ajax({
+			url : BACKEND_URL + "?status=" + $(".mode .btn-group .btn.active").data("index")
+		});
+	} else {
 		$.ajax({
 			url : BACKEND_URL + "?status=0"
 		});
-	});
-
-	$(".status .btn-group .btn").click(function() {
-		$(this).addClass("active").siblings(".btn").removeClass("active");
-
-		if ($(this).hasClass("btn-enable")) {
-			$.ajax({
-				url : BACKEND_URL + "?status=" + $(".mode .btn-group .btn.active").data("index")
-			});
-		} else {
-			$.ajax({
-				url : BACKEND_URL + "?status=0"
-			});
-		}
-	});
-};
+	}
+}
 
 function modulesChanged() {
 	modStore = JSON.parse(localStorage.getItem("savedata"));
@@ -66,6 +70,13 @@ function backendReady() {
 	if (heartbeat)
 		clearInterval(heartbeat);
 	heartbeat = setInterval(getInfoFromServer, HEARTBEAT_INTERVAL);
+
+	$(".status button").removeClass("active");
+	$(".status .btn-disable").addClass("active");
+
+	$.ajax({
+		url : BACKEND_URL + "?status=0"
+	});
 }
 
 function getInfoFromServer() {
