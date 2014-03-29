@@ -108,7 +108,7 @@ function displayModules(data) {
 
 			if (mod.moduleId == m.Module.toString() && mod.channelId == m.Channel.toString() && mod.modType == i) {
 				var nameOfModule = j;
-				$("#module" + nameOfModule + " .valueNum").html(m.Value.toFixed(4));
+				$("#module" + nameOfModule + " .valueNum").html(m.Value.toFixed(3));
 			}
 		}
 	});
