@@ -22,11 +22,11 @@ public class PWM {
     }
 
     public double get() {
-        return value / 255.0;
+        return value / 255.0 * 2.0 - 1.0;
     }
 
     public void set(double speed) {
-        value = (int) (speed * 255);
+        value = (int) ((speed + 1.0) / 2.0 * 255);
     }
 
     public void setRaw(int raw) {
@@ -52,7 +52,7 @@ public class PWM {
     @Override
     public String toString() {
         return "\"" + this.getClass().getSimpleName() + "\": {\"Module\": "
-                + getModuleNumber() + ", \"Channel\": " + getChannel() + 
-                ", \"Value\": " + get() + "}";
+                + getModuleNumber() + ", \"Channel\": " + getChannel()
+                + ", \"Value\": " + get() + "}";
     }
 }
