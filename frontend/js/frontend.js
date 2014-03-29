@@ -106,9 +106,17 @@ function displayModules(data) {
 			if (mod == null)
 				continue;
 
-			if (mod.moduleId == m.Module.toString() && mod.channelId == m.Channel.toString() && mod.modType == i) {
-				var nameOfModule = j;
-				$("#module" + nameOfModule + " .valueNum").html(m.Value.toFixed(3));
+			if (mod.moduleId == m.Module.toString() && mod.channelId == m.Channel.toString()) {
+				if (mod.modType == i) {
+					var nameOfModule = j;
+					if ($.isNumeric(m.Value))
+						$("#module" + nameOfModule + " .valueNum").html(m.Value.toFixed(3));
+					else
+						$("#module" + nameOfModule + " .valueNum").html(m.Value + "");
+				} else if (i == "PWM" && (mod.modType == "Jaguar" || mod.modType == "Talon" || mod.modType == "Victor")) {
+					var nameOfModule = j;
+					$("#module" + nameOfModule + " .valueNum").html(m.Value.toFixed(3));
+				}
 			}
 		}
 	});
@@ -447,6 +455,11 @@ function selectModuleType() {
 
 	// call prepare, give it the correct endpoints
 	prepare(nameOfModule, $(selectedOption + " option:selected").data("inputs"), $(selectedOption + " option:selected").data("outputs"));
+
+	var modCategory = $(this).data("type");
+	if (modCategory == "display") {
+
+	}
 
 	modStore = JSON.parse(localStorage.getItem("savedata"));
 }

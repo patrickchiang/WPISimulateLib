@@ -4,37 +4,29 @@ package edu.wpi.first.wpilibj;
  *
  * @author Patrick
  */
-public class PWM extends DigitalSidecarDevice {
+public class Solenoid {
 
-    private double value = 0;
+    private boolean value = false;
     private int moduleNumber = 0;
     private int channel = 0;
 
-    public PWM(int channel) {
+    public Solenoid(int channel) {
         this(1, channel);
     }
 
-    public PWM(int moduleNumber, int channel) {
+    public Solenoid(int moduleNumber, int channel) {
         this.moduleNumber = moduleNumber;
         this.channel = channel;
 
-        RobotStatus.addDigitalDevice(this);
+        RobotStatus.addSolenoidDevice(this);
     }
 
-    public double get() {
+    public boolean get() {
         return value;
     }
 
-    public void set(double speed) {
-        value = speed;
-    }
-
-    public void setRaw(int raw) {
-        value = raw / 127 - 1.0;
-    }
-
-    public int getRaw() {
-        return (int) ((value + 1.0) * 127.0);
+    public void set(boolean on) {
+        value = on;
     }
 
     public int getModuleNumber() {
