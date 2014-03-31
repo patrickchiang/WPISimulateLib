@@ -3,9 +3,6 @@ package edu.wpi.first.wpilibj;
 import com.sun.net.httpserver.HttpServer;
 import java.io.IOException;
 import java.net.InetSocketAddress;
-import java.util.Arrays;
-import net.java.games.input.Controller;
-import net.java.games.input.ControllerEnvironment;
 
 /**
  *
