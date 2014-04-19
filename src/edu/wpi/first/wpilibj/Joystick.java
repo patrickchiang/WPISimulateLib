@@ -7,37 +7,44 @@ package edu.wpi.first.wpilibj;
 public class Joystick {
 
     private int port;
-    public static AxisType kX;
-    public static AxisType kY;
-    public static AxisType kZ;
-    public static AxisType kTwist;
-    public static AxisType kThrottle;
 
     public Joystick(int port) {
         this.port = port;
-        
-        
-        
-        kX = new AxisType(1);
-        kY = new AxisType(2);
-        kZ = new AxisType(3);
-        kTwist = new AxisType(4);
-        kThrottle = new AxisType(5);
     }
-    
-    public int getAxisChannel(Joystick.AxisType axis) {
-        return axis.index;
+
+    public double getDirectionRadians() {
+        return Math.atan2(getX(), -getY());
     }
-    
-    public double getAxis(Joystick.AxisType axis) {
+
+    public double getDirectionDegrees() {
+        return Math.toDegrees(getDirectionRadians());
+    }
+
+    public double getMagnitude() {
+        return Math.sqrt(getX() * getX() + getY() * getY());
+    }
+
+    public double getRawAxis(int axis) {
         return 0.0;
     }
 
-    public class AxisType {
+    public boolean getRawButton(int button) {
+        return false;
+    }
 
-        public int index;
-        public AxisType(int index) {
-            this.index = index;
-        }
+    public boolean getTrigger() {
+        return getRawButton(1);
+    }
+
+    public double getX() {
+        return getRawAxis(1);
+    }
+
+    public double getY() {
+        return getRawAxis(2);
+    }
+
+    public double getZ() {
+        return getRawAxis(3);
     }
 }

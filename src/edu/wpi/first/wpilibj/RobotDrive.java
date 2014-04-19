@@ -73,7 +73,6 @@ public class RobotDrive {
 
     public void tankDrive(Joystick leftStick, Joystick rightStick, boolean squaredInputs) {
         
-
     }
 
     public void tankDrive(Joystick leftStick, int leftAxis, Joystick rightStick, int rightAxis) {
